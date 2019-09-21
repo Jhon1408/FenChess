@@ -35,41 +35,10 @@ public class Pawn extends Pieces {
         this.x = x;
         this.y = y;
         this.setIcon(this.sprite);
-        
-        addMouseListener(new MouseListener() {
-            public boolean moving = false;
-            @Override            
-            public void mouseClicked(MouseEvent me) {
-                
-            }
-            
-            @Override
-            public void mousePressed(MouseEvent me) {
-                moving = true;
-                showNextMoves();
-            }
-            
-            @Override
-            public void mouseReleased(MouseEvent me) {
-                removeNextMoves();
-                System.out.print("["+getRange(game.getMousePosition().x-5)+" "+getRange(game.getMousePosition().y-20)+"]");
-                movePiece(getRange(game.getMousePosition().x-5),getRange(game.getMousePosition().y-20));
-                moving = false;
-            }
-            
-            @Override
-            public void mouseEntered(MouseEvent me) {
-                
-            }
-
-            @Override
-            public void mouseExited(MouseEvent me) {
-                
-            }
-        });
         this.game.add(this, 0, 0);
     }
     
+    @Override
     public void draw(JFrame Game) {       
         this.setLocation((this.x * (sizeX/8)), ((this.y * sizeY/8)));
         this.setHorizontalAlignment(JLabel.CENTER);
@@ -77,11 +46,12 @@ public class Pawn extends Pieces {
         this.setVisible(true);
     }
     
+    @Override
     public void movePiece(int x, int y) {
         List<Object> posibleMoves = getNextMove(this.x,this.y);
         boolean currentMoveAllowed = false;
         for(int i = 0; i < posibleMoves.size(); i++) {
-            currentMoveAllowed = comprovarMovimiento(x,y,(int[]) posibleMoves.get(i));
+            currentMoveAllowed = checkMove(x,y,(int[]) posibleMoves.get(i));
             if(currentMoveAllowed) {
                 break;
             }           
@@ -103,6 +73,7 @@ public class Pawn extends Pieces {
         }
     }
     
+    @Override
     public List<Object> getNextMove(int x, int y) {
         List<Object> moves = new ArrayList<>();
         int[] point = new int[2];
@@ -135,10 +106,11 @@ public class Pawn extends Pieces {
                 moves.add(point);
             }
         }
-        return moves;
+    return moves;
     }
     
-    public boolean comprovarMovimiento(int x, int y, int[] temp) {
+    @Override
+    public boolean checkMove(int x, int y, int[] temp) {
         boolean result = false;
         if(("b".equals(board.boardState.getTurn())) && (!this.type.equals(this.type.toUpperCase())) && (x == temp[0]) && (y == temp[1])) {          
             result = true;
@@ -148,6 +120,7 @@ public class Pawn extends Pieces {
         return result;
     }
     
+    @Override
     public void removeNextMoves() {
         for(int i = 0; i < this.nextMoves.size(); i++) {
             JLabel currentMove = (JLabel) this.nextMoves.get(i);          
@@ -157,6 +130,7 @@ public class Pawn extends Pieces {
         this.nextMoves.clear();
     }
     
+    @Override
     public void showNextMoves() {
         List posibleMoves = getNextMove(this.x,this.y);
         int[] temp;

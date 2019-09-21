@@ -7,10 +7,12 @@ package Modules.Pieces;
 
 import Graphics.Game;
 import Modules.Board;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
@@ -29,6 +31,40 @@ public class Pieces extends JLabel {
     public ImageIcon sprite;
     public String type;
     public String key;
+    
+    public Pieces() {
+        addMouseListener(new MouseListener() {
+            public boolean moving = false;
+            @Override            
+            public void mouseClicked(MouseEvent me) {
+                
+            }
+            
+            @Override
+            public void mousePressed(MouseEvent me) {
+                moving = true;
+                showNextMoves();
+            }
+            
+            @Override
+            public void mouseReleased(MouseEvent me) {
+                removeNextMoves();
+                System.out.print("["+getRange(game.getMousePosition().x-5)+" "+getRange(game.getMousePosition().y-20)+"]");
+                movePiece(getRange(game.getMousePosition().x-5),getRange(game.getMousePosition().y-20));
+                moving = false;
+            }
+            
+            @Override
+            public void mouseEntered(MouseEvent me) {
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me) {
+                
+            }
+        });
+    }
     
     int getRange(int pos) {
         int value = (sizeX/8);
@@ -57,18 +93,6 @@ public class Pieces extends JLabel {
         if(pos > (7*value)+1 && pos < 8*value) {
             result = 7;
         }
-        /*
-        NavigableMap<Integer, Integer> map = new TreeMap<Integer, Integer>();
-        map.put(0, 0);
-        map.put((sizeX/8), 1);
-        map.put(2 * (sizeX/8) , 2);
-        map.put(3 * (sizeX/8), 3);
-        map.put(4 * (sizeX/8), 4);
-        map.put(5 * (sizeX/8), 5);
-        map.put(6 * (sizeX/8), 6);
-        map.put(7 * (sizeX/8), 7);
-        return map.ceilingEntry(pos).getValue();
-        */
         return result;
     }
     
@@ -137,4 +161,25 @@ public class Pieces extends JLabel {
         }
         game.setVisible(true);
     }
+    
+    public void draw(JFrame Game) {   
+    }
+    
+    public void movePiece(int x, int y) {       
+    }
+    
+    public List<Object> getNextMove(int x, int y) {
+        return null;
+    }
+    
+    public boolean checkMove(int x, int y, int[] temp) {
+        return false;
+    }
+    
+    public void removeNextMoves() {        
+    }
+    
+    public void showNextMoves() {
+    }
+    
 }
